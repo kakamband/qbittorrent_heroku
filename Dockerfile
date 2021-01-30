@@ -1,7 +1,7 @@
 FROM linuxserver/qbittorrent:version-14.2.5.99202004250119-7015-2c65b79ubuntu18.04.1
 
 # add local files
-#COPY root/ /
+COPY root/ /
 
 RUN apt-get update
 RUN apt-get install sudo
