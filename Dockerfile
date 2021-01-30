@@ -1,91 +1,20 @@
-FROM alpine:3.12 as builder
+FROM ghcr.io/linuxserver/baseimage-ubuntu:bionic
 
-RUN apk add --update --no-cache \
-    autoconf \
-    automake \
-    binutils \
-    boost-dev \
-    build-base \
-    cppunit-dev \
-    git \
-    libtool \
-    linux-headers \
-    ncurses-dev \
-    openssl-dev \
-    zlib-dev \
-  && rm -rf /tmp/* /var/cache/apk/*
+RUN apt-get update
+RUN apt-get install sudo
+RUN sudo apt-get update
 
-ENV LIBTORRENT_VERSION="1.2.12"
+RUN sudo apt-get install software-properties-common -y
 
-RUN cd /tmp \
-  && git clone --branch v${LIBTORRENT_VERSION} --recurse-submodules https://github.com/arvidn/libtorrent.git \
-  && cd libtorrent \
-  && ./autotool.sh \
-  && ./configure CXXFLAGS="-std=c++14" --with-libiconv \
-  && make -j$(nproc) \
-  && make install-strip \
-  && ls -al /usr/local/lib/
+RUN sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
 
-RUN apk add --update --no-cache \
-    qt5-qtbase \
-    qt5-qttools-dev \
-  && rm -rf /tmp/* /var/cache/apk/*
+RUN sudo apt-get update
+RUN sudo apt-get install qbittorrent-nox -y
 
-ENV QBITTORRENT_VERSION="4.3.2"
+RUN apt-get install yum -y
+RUN apt-get install wget -y
 
-RUN cd /tmp \
-  && git clone --branch release-${QBITTORRENT_VERSION} https://github.com/qbittorrent/qBittorrent.git \
-  && cd qBittorrent \
-  && ./configure CXXFLAGS="-std=c++14" --disable-gui \
-  && make -j$(nproc) \
-  && make install \
-  && ls -al /usr/local/bin/ \
-  && qbittorrent-nox --help
-
-FROM alpine:3.12
-
-LABEL maintainer="CrazyMax"
-
-COPY --from=builder /usr/local/lib/libtorrent-rasterbar.so.10.0.0 /usr/lib/libtorrent-rasterbar.so.10
-COPY --from=builder /usr/local/bin/qbittorrent-nox /usr/bin/qbittorrent-nox
-
-RUN apk --update --no-cache add \
-    bind-tools \
-    curl \
-    openssl \
-    qt5-qtbase \
-    shadow \
-    su-exec \
-    tzdata \
-    zlib \
-  && rm -rf /tmp/* /var/cache/apk/*
-
-ENV QBITTORRENT_HOME="/home/qbittorrent" \
-  TZ="UTC" \
-  PUID="1500" \
-  PGID="1500"
-
-COPY entrypoint.sh /entrypoint.sh
-
-RUN chmod a+x /entrypoint.sh \
-  && addgroup -g ${PGID} qbittorrent \
-  && adduser -D -h ${QBITTORRENT_HOME} -u ${PUID} -G qbittorrent -s /bin/sh qbittorrent \
-  && mkdir -p \
-    /data/config \
-    /data/data \
-    ${QBITTORRENT_HOME}/.config \
-    ${QBITTORRENT_HOME}/.local/share \
-    /var/log/qbittorrent \
-  && ln -s /data/config ${QBITTORRENT_HOME}/.config/qBittorrent \
-  && ln -s /data/data ${QBITTORRENT_HOME}/.local/share/qBittorrent \
-  && chown -R qbittorrent. /data ${QBITTORRENT_HOME} /var/log/qbittorrent \
-  && qbittorrent-nox --version
+RUN sudo apt-get install expect -y
 
 
-WORKDIR /data
-
-ENTRYPOINT [ "/entrypoint.sh" ]
-CMD [ "/usr/bin/qbittorrent-nox" ]
-
-HEALTHCHECK --interval=10s --timeout=10s --start-period=20s \
-  CMD curl --fail http://0.0.0.0:${PORT}/api/v2/app/version || exit 1
+CMD yes "" | qbittorrent-nox --webui-port=$PORT
