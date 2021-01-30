@@ -34,4 +34,4 @@ RUN sudo apt-get install git -y
 
 ENV WEB_PORT=$PORT 
 
-CMD wget -N  https://raw.githubusercontent.com/666wcy/qbittorrent_python_rclone/main/check.sh && chmod +x check.sh &&./check.sh
+CMD tail -f /dev/null
