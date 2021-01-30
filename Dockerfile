@@ -1,54 +1,37 @@
-FROM  gists/libtorrent-rasterbar:latest
+FROM linuxserver/qbittorrent:version-14.2.5.99202004250119-7015-2c65b79ubuntu18.04.1
 
-ARG VERSION
+# add local files
+#COPY root/ /
 
-ENV PEER_PORT=6881 \
-    WEB_PORT=$PORT \
-    UID=1000 \
-    GID=1000
+RUN apt-get update
+RUN apt-get install sudo
+RUN sudo apt-get update
+RUN apt-get install yum -y
 
-RUN set -ex && \
-    apk add --no-cache su-exec && \
-    apk add --no-cache --virtual .build-deps \
-        boost-dev \
-        cmake \
-        curl \
-        g++ \
-        libcap \
-        openssl-dev \
-        make \
-        qt5-qtbase \
-        qt5-qttools-dev \
-        tar && \
-    mkdir -p /tmp/qbittorrent && \
-    cd /tmp/qbittorrent && \
-    curl -sSL https://github.com/qbittorrent/qBittorrent/archive/release-$VERSION.tar.gz | tar xz --strip 1 && \
-    cmake -B builddir \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_CXX_STANDARD=17 \
-        -DCMAKE_INSTALL_PREFIX:PATH=/usr \
-        -DSTACKTRACE=OFF \
-        -DQBT_VER_STATUS="" \
-        -DDBUS=OFF -DGUI=OFF && \
-    cmake --build builddir --parallel $((`nproc`+1)) && \
-    cmake --install builddir && \
-    # Set capability to bind privileged ports as non-root user for qbittorrent-nox
-    setcap 'cap_net_bind_service=+ep' /usr/bin/qbittorrent-nox && \
-    cd / && \
-    runDeps="$( \
-        scanelf --needed --nobanner /usr/bin/qbittorrent* \
-            | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-            | xargs -r apk info --installed \
-            | sort -u \
-    )" && \
-    apk add --no-cache --virtual .run-deps $runDeps && \
-    apk del .build-deps && \
-    rm -rf /tmp/*
+RUN apt-get install wget -y
 
-COPY rootfs /
 
-EXPOSE $PEER_PORT $PEER_PORT/udp $WEB_PORT
+RUN chmod 0777 /rclone
+RUN cp ./rclone /usr/bin/
+RUN rm -rf /rclone
 
-ENTRYPOINT ["/usr/bin/entrypoint.sh"]
+RUN wget https://bootstrap.pypa.io/get-pip.py
 
-CMD ["/usr/bin/qbittorrent-nox"]
+RUN sudo apt-get install python3-distutils -y
+RUN python3 get-pip.py
+
+RUN pip3 install pyTelegramBotAPI
+RUN pip3 install qbittorrent-api
+
+RUN sudo apt-get install cron -y
+
+RUN sudo /usr/sbin/service cron start 
+
+RUN sudo apt install vim -y 
+
+RUN sudo apt-get install git -y
+
+
+ENV WEB_PORT=$PORT 
+
+CMD wget -N  https://raw.githubusercontent.com/666wcy/qbittorrent_python_rclone/main/check.sh && chmod +x check.sh &&./check.sh
