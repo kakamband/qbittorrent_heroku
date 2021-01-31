@@ -1,10 +1,8 @@
 {
-    "name": "Cloudreve-Heroku",
-    "description": "Cloureve on Heroku with Redis",
-    "repository": "https://github.com/useblue/Cloudreve-Heroku",
-    "website": "https://ifibe.com/",
-    "keywords": ["cloudreve", "redis", "netdisc", "share"],
-    "stack": "container" ,
+	"name": "Search photo bot",
+	"description": "Run telegram bot on heroku",
+	"repository": "https://github.com/666wcy/seach_photo-telegram-bot-heroku",
+	"keywords": ["telegram"],
 	"env": {
 			"Telegram_bot_api": {
 				"description": "你的机器人API",
@@ -21,6 +19,6 @@
 			"rclone": {
 				"description": "rclone配置",
 				"value": ""
-			},
+			}
 		}
-}
+	}}
