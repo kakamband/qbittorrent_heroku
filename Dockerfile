@@ -15,6 +15,23 @@ RUN apt-get install yum -y
 RUN apt-get install wget -y
 
 RUN sudo apt-get install expect -y
+
+RUN wget https://bootstrap.pypa.io/get-pip.py
+
+RUN sudo apt-get install python3-distutils -y
+RUN python3 get-pip.py
+
+RUN pip3 install pyTelegramBotAPI
+RUN pip3 install qbittorrent-api
+
+RUN sudo apt-get install cron -y
+
+RUN sudo /usr/sbin/service cron start 
+
+RUN sudo apt install vim -y 
+
+RUN sudo apt-get install git -y
+
 COPY root /
 RUN mkdir /upload
 COPY upload /upload
