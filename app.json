@@ -5,20 +5,21 @@
 	"keywords": ["telegram"],
 	"env": {
 			"Telegram_bot_api": {
-				"description": "你的机器人API",
+				"description": "API",
 				"value": ""
 			},
 			"Telegram_user_id": {
-				"description": "你的Telegram用户ID",
+				"description": "Telegram ID",
 				"value": ""
 			},
 			"Rule": {
-				"description": "上传规则",
+				"description": "upload",
 				"value": ""
 			},
 			"rclone": {
-				"description": "rclone配置",
+				"description": "rclone",
 				"value": ""
 			}
 		}
-	}}
+	
+}
