@@ -8,7 +8,7 @@ Telegram_bot_api=os.environ.get('Telegram_bot_api')
 Telegram_user_id=os.environ.get('Telegram_user_id')
 Rule=os.environ.get('Rule')
 Rule=Rule.split("AND")
-print(Rule)
+
 rclone=os.environ.get('rclone')
 
 def mkdir(path):
@@ -35,7 +35,11 @@ def mkdir(path):
 
 os.chdir(os.path.dirname(__file__))
 
-print(rclone)
+print(f"Telegram_bot_api:{Telegram_bot_api}\n"
+      f"Telegram_user_id:{Telegram_user_id}\n"
+      f"QB_port:{QB_port}\n"
+      f"Rule:{Rule}"
+      f"rclone:{rclone}")
 
 mkdir("/config/rclone")
 with open("/config/rclone/rclone.conf", "w") as f:
