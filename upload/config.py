@@ -44,15 +44,20 @@ with open("/config/rclone/rclone.conf", "w") as f:
     f.write(rclone)
     f.close()
 
-with open("config.json", "r",encoding='utf-8') as jsonFile:
+with open("/upload/config.json", "r",encoding='utf-8') as jsonFile:
     data = json.load(jsonFile)
     jsonFile.close()
 
 data["QB_port"] = QB_port
 data["Telegram_bot_api"] = Telegram_bot_api
 data["Telegram_user_id"] = Telegram_user_id
-data["Rule"] = Rule
 
-with open("config.json", "w") as jsonFile:
+new_rule=[]
+for a in  Rule:
+    new_rule.append(json.loads(a))
+data["Rule"] = new_rule
+
+
+with open("/upload/config.json", "w") as jsonFile:
     json.dump(data, jsonFile,ensure_ascii=False)
     jsonFile.close()
