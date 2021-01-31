@@ -6,7 +6,7 @@ QB_port=os.environ.get('PORT')
 Telegram_bot_api=os.environ.get('Telegram_bot_api')
 Telegram_user_id=os.environ.get('Telegram_user_id')
 Rule=os.environ.get('Rule')
-Rule=Rule.split("AND")
+Rule=Rule.split("\n")
 
 rclone=os.environ.get('rclone')
 
