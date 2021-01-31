@@ -12,8 +12,8 @@ import telebot
 import datetime
 import shutil
 os.chdir(os.path.dirname(__file__))
-
-
+print("开始上传")
+sys.stdout.flush()
 Torrents_name = sys.argv[1]         #名称
 
 Torrents_category = sys.argv[2]     #类别
@@ -155,6 +155,7 @@ if __name__ == '__main__':
         Upload_list=Rule['Upload']
         if Torrents_category==category :
             print(category ,share_rate,time,tags,emby)
+            sys.stdout.flush()
             if time=="0" and share_rate=="0" and emby=="false" :
                 print("直接调用rclone")
                 if int(Torrents_num)==1:
