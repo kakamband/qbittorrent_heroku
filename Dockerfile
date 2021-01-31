@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-ubuntu:bionic
+FROM ubuntu
 
 RUN apt-get update
 RUN apt-get install sudo
