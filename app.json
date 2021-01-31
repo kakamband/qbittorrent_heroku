@@ -4,9 +4,8 @@
     "repository": "https://github.com/useblue/Cloudreve-Heroku",
     "website": "https://ifibe.com/",
     "keywords": ["cloudreve", "redis", "netdisc", "share"],
-    "stack": "container"
-  
-  "env": {
+    "stack": "container" ,
+	"env": {
 			"Telegram_bot_api": {
 				"description": "你的机器人API",
 				"value": ""
