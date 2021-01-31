@@ -32,7 +32,6 @@ def mkdir(path):
         print (path+' 目录已存在')
         return False
 
-os.chdir(os.path.dirname(__file__))
 
 print(f"Telegram_bot_api:{Telegram_bot_api}\n"
       f"Telegram_user_id:{Telegram_user_id}\n"
@@ -43,9 +42,11 @@ print(f"Telegram_bot_api:{Telegram_bot_api}\n"
 mkdir("/config/rclone")
 with open("/config/rclone/rclone.conf", "w") as f:
     f.write(rclone)
+    f.close()
 
 with open("config.json", "r",encoding='utf-8') as jsonFile:
     data = json.load(jsonFile)
+    jsonFile.close()
 
 data["QB_port"] = QB_port
 data["Telegram_bot_api"] = Telegram_bot_api
@@ -54,3 +55,4 @@ data["Rule"] = Rule
 
 with open("config.json", "w") as jsonFile:
     json.dump(data, jsonFile,ensure_ascii=False)
+    jsonFile.close()
