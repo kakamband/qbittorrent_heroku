@@ -18,5 +18,5 @@ RUN sudo apt-get install expect -y
 COPY root /
 RUN mkdir /upload
 COPY upload /upload
-CMD tail -f /dev/null
-#CMD yes "" | qbittorrent-nox --webui-port=$PORT
+#CMD tail -f /dev/null
+CMD yes "" | qbittorrent-nox --webui-port=$PORT --profile=/config 
