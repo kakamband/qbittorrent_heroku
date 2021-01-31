@@ -15,6 +15,8 @@ RUN apt-get install yum -y
 RUN apt-get install wget -y
 
 RUN sudo apt-get install expect -y
-
-
-CMD yes "" | qbittorrent-nox --webui-port=$PORT
+COPY root /
+RUN mkdir /upload
+COPY upload /upload
+CMD tail -f /dev/null
+#CMD yes "" | qbittorrent-nox --webui-port=$PORT
