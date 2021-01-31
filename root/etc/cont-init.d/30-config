@@ -13,6 +13,5 @@ fi
 cp -ru /usr/local/qbittorrent/defaults/Search/*  /config/qBittorrent/data/nova3/engines
 
 # permissions
-chown -R abc:abc \
-	/config \
+chown -R /config \
     /downloads
