@@ -23,5 +23,7 @@ RUN chmod 0777 /rclone
 RUN cp ./rclone /usr/bin/
 RUN rm -rf /rclone
 RUN sudo chmod 777 /upload/ -R
+RUN sudo chmod 777 /start.sh
 #CMD tail -f /dev/null
-CMD yes "" | qbittorrent-nox --webui-port=$PORT --profile=/config 
+#CMD yes "" | qbittorrent-nox --webui-port=$PORT --profile=/config 
+CMD bash start.sh
