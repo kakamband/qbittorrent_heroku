@@ -20,7 +20,12 @@
 			"rclone": {
 				"description": "rclone",
 				"value": ""
+			},
+			"title": {
+				"description": "title",
+				"value": ""
 			}
+
 		}
 	
 }
